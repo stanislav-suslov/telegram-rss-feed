@@ -1,0 +1,35 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Feed
+
+on:
+  schedule:
+    - cron: '* * * * *'
+
+jobs:
+  feed:
+    name: 'Feed'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: feed.yml
+        name: storage
+        path: ./
+      continue-on-error: true
+    - uses: actions/setup-node@v3
+      with:
+        node-version: '18.7.0'
+        cache: 'npm'
+    - run: npm start
+      env:
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        RSS_FEED_URL: ${{ secrets.RSS_FEED_URL }}
+    - uses: actions/upload-artifact@v3
+      with:
+        name: storage
+        path: storage.json
+
