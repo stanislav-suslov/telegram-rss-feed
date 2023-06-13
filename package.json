@@ -17,7 +17,7 @@
     },
     "homepage": "https://github.com/stanislav-suslov/telegram-rss-feed#readme",
     "dependencies": {
-        "rss-parser": "^3.12.0"
+        "rss-parser": "^3.13.0"
     },
     "engines": {
         "node": "18.7.0"
